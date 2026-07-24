@@ -9,10 +9,10 @@ interface Props {
 
 const { brandData } = Astro.props;
 
+const firstServiceUrl = brandData.services[0].url.toLowerCase();
+
 function getMinPriceService(subServices: Array<{ price: string; unit: string; name: string }>) {
-  return subServices.reduce((min, current) =>
-    parseFloat(current.price) < parseFloat(min.price) ? current : min,
-  );
+  return subServices.reduce((min, current) => (parseFloat(current.price) < parseFloat(min.price) ? current : min));
 }
 
 const discount = getDiscountPercent(brandData.main.adv_price_percent);
@@ -64,6 +64,7 @@ const featureIcons = [
       {
         brandData.services
           .filter((service) => service.is_active === 1)
+          .slice(0, 7)
           .map((service, index) => {
             const minService = getMinPriceService(service.services);
             const discountedPrice = getDiscountedPrice(minService.price, discount);
@@ -90,12 +91,7 @@ const featureIcons = [
                 {isFeatured && <p class="mb-4">24/7</p>}
 
                 <h3 class="_service-card-title mb-6 typo-h4">{service.name}</h3>
-                <p
-                  class:list={[
-                    "_service-card-description mb-8 typo-t3",
-                    isFeatured ? "text-text-secondary" : "text-text-secondary",
-                  ]}
-                >
+                <p class:list={["_service-card-description mb-8 typo-t3", isFeatured ? "text-text-secondary" : "text-text-secondary"]}>
                   {service.description}
                 </p>
 
@@ -110,6 +106,9 @@ const featureIcons = [
             );
           })
       }
+    </div>
+    <div class="flex items-center justify-center gap-4 mt-16">
+      <Button href={firstServiceUrl} variant="secondary" text="Все услуги" arrow="right" />
     </div>
   </div>
 </section>
