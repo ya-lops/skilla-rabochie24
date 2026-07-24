@@ -16,13 +16,13 @@ const firstServiceUrl = brandData.services[0].url.toLowerCase();
 {
   type == "main" && (
     <section
-      class="hero grid grid-cols-[100%] min-h-[730px] bg-hero-main-surface text-hero-main-text overflow-clip isolate"
+      class="hero grid grid-cols-[100%] min-h-[595px] bg-hero-main-surface text-hero-main-text overflow-clip isolate"
       data-cmp="Hero"
     >
       <div class="container h-full">
         <div class="_hero-inner relative grid grid-cols-1 lg:grid-cols-2 items-start lg:items-center h-full py-8">
-          <div class="_hero-image">
-            <img class="scale-200 md:scale-125 lg:scale-none" src="/images/hero-main.webp" alt="" fetchpriority="high" />
+          <div class="_hero-image order-last lg:order-1">
+            <img class="" src="/images/hero-main.webp" alt="" fetchpriority="high" />
           </div>
 
           <div class="_hero-content flex flex-col gap-10">

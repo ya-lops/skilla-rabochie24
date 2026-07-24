@@ -11,17 +11,15 @@ interface Props {
 const { brandData } = Astro.props;
 ---
 
-<div
-  class="flex flex-col lg:flex-row justify-between gap-6 mt-20 p-6 lg:p-10 rounded-xl bg-cta-surface text-cta-text"
-  data-cmp="CtaCall"
+<section
+  class="flex flex-col lg:flex-row justify-between gap-6 p-6 lg:p-10 rounded-xl bg-cta-surface text-cta-text"
+  data-cmp="CtaPrice"
 >
-  <p class="typo-t2 max-w-[20rem] mr-auto">
-    Свяжитесь с нами и мы расчитаем точную стоимость под ваши задачи
-  </p>
+  <p class="typo-t2 max-w-[20rem] mr-auto">Свяжитесь с нами и мы расчитаем точную стоимость под ваши задачи</p>
 
-  <div class="flex">
+  <div class="flex flex-col lg:flex-row items-center gap-10">
     <Button class="w-full lg:w-auto" href="#contact" variant="accent" text="Позвонить" />
 
-    <BlockMessengersLinks class="text-text-secondary-inverse" {brandData} />
+    <BlockMessengersLinks class="text-text-primary" {brandData} />
   </div>
-</div>
+</section>

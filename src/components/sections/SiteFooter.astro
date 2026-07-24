@@ -42,29 +42,29 @@ const workTime = [
           <div class="flex flex-col gap-4">
             {
               brandData.main.site_phone && (
-                <a class="typo-t1 text-text-primary-inverse hover:underline!" href={`tel:${brandData.main.site_phone}`}>
+                <a class="typo-t1 text-text-primary hover:underline!" href={`tel:${brandData.main.site_phone}`}>
                   {brandData.main.site_phone}
                 </a>
               )
             }
             {
               brandData.main.site_phone2 && (
-                <a class="typo-t1 text-text-primary-inverse hover:underline!" href={`tel:${brandData.main.site_phone2}`}>
+                <a class="typo-t1 text-text-primary hover:underline!" href={`tel:${brandData.main.site_phone2}`}>
                   {brandData.main.site_phone2}
                 </a>
               )
             }
 
-            <a class="text-text-tertiary-inverse hover:underline!" href={`mailto:${brandData.main.site_email}`}
+            <a class="text-text-primary hover:underline!" href={`mailto:${brandData.main.site_email}`}
               >{brandData.main.site_email}</a
             >
           </div>
 
-          <BlockMessengersLinks {brandData} class="text-text-secondary-inverse"/>
+          <BlockMessengersLinks {brandData} class="text-text-secondary"/>
 
           {
             workTime && (
-              <div class="text-text-tertiary-inverse">
+              <div class="text-text-tertiary">
                 {workTime.map((i: any) => (
                   <p class="not:last:mb-1">
                     {i.text}: {i.value}
@@ -121,7 +121,7 @@ const workTime = [
                     <li class="_footer-document flex items-baseline gap-2">
                       <span class="_footer-document-name flex gap-2">{document.name}</span>
                       <a
-                        class="_footer-document-format-link py-0.5 px-1.25 rounded-md border border-transparent bg-surface-secondary-inverse hover:border-outline hover:no-underline typo-label"
+                        class="_footer-document-format-link py-0.5 px-1.25 rounded-md border border-surface-secondary bg-surface-secondary hover:bg-transparent hover:border-button-surface-accent hover:no-underline typo-label"
                         href={`${STORAGE_PATH}${document.path}`}
                         download={document.filename}
                       >
@@ -146,7 +146,7 @@ const workTime = [
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 py-6 text-footer-bottom-text typo-t4">
         <p>{brandData.default.name} – {new Date().getFullYear()} г.</p>
         <p>Информация на данном сайте носит информационный характер и не является офертой. ст. 437 ч. 1 ГК РФ</p>
-        <a class="hover:text-primary-inverse hover:underline" href="/policy">Политика конфиденциальности</a>
+        <a class="hover:text-text-primary hover:underline" href="/policy">Политика конфиденциальности</a>
       </div>
     </div>
   </div>

@@ -19,13 +19,13 @@ const allPartnersLogos = [...brandData.partners.default_logos, ...(brandData.par
     <div class="_partners-inner">
       {full && <h2 class="_partners-title mb-8 md:12 lg:mb-16 typo-h2">Мы сотрудничаем</h2>}
 
-      <div class:list={["_partners-grid", full ? "grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] lg:grid-cols-3 gap-4" : "flex flex-wrap justify-center lg:flex-nowrap gap-5 gap-y-10 lg:gap-20"]}>
+      <div class:list={["_partners-grid", full ? "grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] lg:grid-cols-4 gap-4" : "flex flex-wrap justify-center lg:flex-nowrap gap-5 gap-y-10 lg:gap-20"]}>
         {
           allPartnersLogos.map((logo: any) => (
             <div
               class:list={[
                 "_partners-item flex items-center justify-center",
-                full ? "h-25 lg:h-50 w-full border border-outline rounded-xl bg-surface-primary" : "max-h-8 lg:max-h-20.75 max-w-37.5 grayscale opacity-60",
+                full ? "h-25 lg:h-50 w-full" : "max-h-8 lg:max-h-20.75 max-w-37.5 grayscale opacity-60",
               ]}
             >
               <img

@@ -11,69 +11,27 @@ import { getGlobalMinPriceWithDiscount, getDiscountPercent } from "@/utils/price
 import CtaPrice from "../blocks/CtaPrice.astro";
 
 const discount = getDiscountPercent(brandData.main.adv_price_percent);
-const { price, discountedPrice, showDiscount } = getGlobalMinPriceWithDiscount(
-  brandData.services,
-  discount,
-);
+const { price, discountedPrice, showDiscount } = getGlobalMinPriceWithDiscount(brandData.services, discount);
 ---
 
 <section class="calculator py-8 md:py-10 lg:py-20 bg-surface-secondary" data-cmp="CalculatorForm">
   <div class="container">
     <div class="_calculator-inner">
-      <h2 class="_calculator-title max-w-187 mx-auto mb-8 typo-h2 balance">
-        Сколько стоит ваш штатный сотрудник?
-      </h2>
-      <p class="_calculator-title-description mb-8 text-text-secondary text-center typo-t3">
-        Калькулятор расчета зарплаты
-      </p>
+      <h2 class="_calculator-title mb-8 typo-h2 balance">Сколько стоит ваш штатный сотрудник?</h2>
+      <p class="_calculator-title-description mb-8 text-text-secondary typo-t3">Калькулятор расчета зарплаты</p>
 
       <div
         class="_calculator-form-wrap grid grid-cols-1 lg:grid-cols-[0.86fr_1.14fr] gap-10 lg:gap-20 not-last:mb-20"
         x-data="employeeCostCalculator()"
       >
-        <div
-          class="_calculator-inputs grid grid-cols-1 lg:grid-cols-2 gap-4 *:p-3 *:rounded-sm *:bg-surface-primary"
-        >
-          <CalcInput
-            id="calc-net-salary"
-            label="Зарплата на руки"
-            model="netSalary"
-            unit="₽"
-            slider
-            min="0"
-            max="200000"
-            step="1000"
-          />
+        <div class="_calculator-inputs grid grid-cols-1 lg:grid-cols-2 gap-4 *:p-3 *:rounded-sm *:bg-surface-primary">
+          <CalcInput id="calc-net-salary" label="Зарплата на руки" model="netSalary" unit="₽" slider min="0" max="200000" step="1000" />
 
-          <CalcInput
-            id="calc-work-hours"
-            label="Рабочих часов в месяц"
-            model="workHoursMonth"
-            unit="ч./мес"
-            slider
-            min="0"
-            max="300"
-          />
+          <CalcInput id="calc-work-hours" label="Рабочих часов в месяц" model="workHoursMonth" unit="ч./мес" slider min="0" max="300" />
 
-          <CalcInput
-            id="calc-vacation"
-            label="Отпускных дней в год"
-            model="vacationDays"
-            unit="д./год"
-            slider
-            min="0"
-            max="60"
-          />
+          <CalcInput id="calc-vacation" label="Отпускных дней в год" model="vacationDays" unit="д./год" slider min="0" max="60" />
 
-          <CalcInput
-            id="calc-sick"
-            label="Больничных дней в год"
-            model="sickDays"
-            unit="д./год"
-            slider
-            min="0"
-            max="30"
-          />
+          <CalcInput id="calc-sick" label="Больничных дней в год" model="sickDays" unit="д./год" slider min="0" max="30" />
 
           <CalcInput
             id="calc-overhead"
@@ -87,16 +45,7 @@ const { price, discountedPrice, showDiscount } = getGlobalMinPriceWithDiscount(
             max="100"
           />
 
-          <CalcInput
-            id="calc-shift"
-            label="Длительность смены"
-            model="shiftDuration"
-            unit="ч."
-            colSpan="full"
-            slider
-            min="1"
-            max="24"
-          />
+          <CalcInput id="calc-shift" label="Длительность смены" model="shiftDuration" unit="ч." colSpan="full" slider min="1" max="24" />
 
           <CalcInput
             id="calc-medbooks"
@@ -112,9 +61,7 @@ const { price, discountedPrice, showDiscount } = getGlobalMinPriceWithDiscount(
         </div>
 
         <div class="_calculator-result py-5 rounded-xl bg-surface-primary overflow-clip">
-          <div
-            class="_calculator-result-items grid grid-cols-1 lg:grid-cols-3 gap-3 px-5 *:flex *:flex-col *:gap-2 *:p-5 *:pb-7"
-          >
+          <div class="_calculator-result-items grid grid-cols-1 lg:grid-cols-3 gap-3 px-5 *:flex *:flex-col *:gap-2 *:p-5 *:pb-7">
             <div class="_calculator-result-item">
               <span class="_label mb-2 text-text-tertiary typo-t4">Зарплата на руки</span>
               <span>
@@ -154,16 +101,13 @@ const { price, discountedPrice, showDiscount } = getGlobalMinPriceWithDiscount(
             </div>
           </div>
 
-          <div
-            class="_calculator-result-separator border-t-16 border-dotted border-t-surface-secondary -mx-2"
-          >
-          </div>
+          <div class="_calculator-result-separator border-t-16 border-dotted border-t-surface-secondary -mx-2"></div>
 
           <div class="_calculator-result-total p-[1.25rem_2.75rem_1.35rem_2.75rem]">
             <p class="typo-t4 mb-4 text-text-tertiary">Итого:</p>
             <p class="typo-h5">
               <span class="_result-hour" x-text="fmt(totalPerHour, 2)"></span>
-              <span class="text-sm">₽</span>/час
+              <span>₽/час</span>
             </p>
             <p class="typo-t4">Стоимость вашего сотрудника</p>
           </div>
@@ -198,8 +142,7 @@ const { price, discountedPrice, showDiscount } = getGlobalMinPriceWithDiscount(
       },
 
       get annualHours() {
-        const raw =
-          this.workHoursMonth * 12 - (this.vacationDays + this.sickDays) * this.shiftDuration;
+        const raw = this.workHoursMonth * 12 - (this.vacationDays + this.sickDays) * this.shiftDuration;
         return raw > 0 ? raw : 0;
       },
 

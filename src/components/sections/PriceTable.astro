@@ -25,10 +25,11 @@ const showDiscount = hasDiscount(discountPercent);
 
 <section class="py-8 md:py-10 lg:py-20" data-cmp="PriceTable">
   <div class="container">
-    <h1 class="_price-table-title mb-8 typo-h1">
+    <h1 class="mb-8 typo-h1">
       {currentService?.name} в {brandData.main.city_rod}
     </h1>
-    <p class="mb-20 typo-t3 text-text-secondary text-center balance">
+
+    <p class="mb-20 typo-t3 text-text-secondary balance">
       {
         currentService?.description ||
           "Для переезда, склада и стройки. Работаем с погрузчиками, штабелёрами, по доступной цене и без задержек."
@@ -96,7 +97,7 @@ const showDiscount = hasDiscount(discountPercent);
                               {discountPercent}%
                             </div>
                             <div class="lg:w-full text-center ">
-                              от {discountedPrice} руб. / {subService.unit}
+                              от {discountedPrice} ₽/{subService.unit}
                             </div>
                           </div>
                         </div>
@@ -104,7 +105,7 @@ const showDiscount = hasDiscount(discountPercent);
                         <div class="flex items-center justify-between typo-t2 p-6 text-center">
                           <div class="lg:hidden typo-t3 text-text-secondary">Обычная цена</div>
                           <div class="lg:w-full p-4 lg:p-0 text-center">
-                            от {subService.price} руб. / {subService.unit}
+                            от {subService.price} ₽/{subService.unit}
                           </div>
                         </div>
                       </div>
@@ -124,7 +125,9 @@ const showDiscount = hasDiscount(discountPercent);
       </div>
     </div>
 
-    <CtaCall {brandData} />
+    <div class="mt-10 lg:mt-20">
+      <CtaCall {brandData} />
+    </div>
   </div>
 </section>
 
@@ -138,7 +141,7 @@ const showDiscount = hasDiscount(discountPercent);
         background: var(--color-accent);
 
         @media (width >= 64rem) {
-          height: 100%;
+          height: 46px;
           width: 3px;
         }
       }

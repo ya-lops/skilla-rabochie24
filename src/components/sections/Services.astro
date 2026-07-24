@@ -1,31 +1,63 @@
 ---
 import type { BrandData } from "@/types/brand";
-
 import { getDiscountedPrice, getDiscountPercent, hasDiscount } from "@/utils/price";
-
-import Button from "@/components/ui/Button.astro";
-import IconService from "@/components/IconService.astro";
+import Button from "../ui/Button.astro";
 
 interface Props {
   brandData: BrandData;
-  media: "icon" | "image";
 }
 
-const { brandData, media = "image" } = Astro.props;
+const { brandData } = Astro.props;
 
-// Функция для поиска подуслуги с минимальной ценой
 function getMinPriceService(subServices: Array<{ price: string; unit: string; name: string }>) {
-  return subServices.reduce((min, current) => (parseFloat(current.price) < parseFloat(min.price) ? current : min));
+  return subServices.reduce((min, current) =>
+    parseFloat(current.price) < parseFloat(min.price) ? current : min,
+  );
 }
 
-// Получаем скидку по акции
 const discount = getDiscountPercent(brandData.main.adv_price_percent);
 const showDiscount = hasDiscount(discount);
 
-const serviceIcons = ["office", "cargo", "helmet"];
+// SVG-иконки для первых трёх услуг
+const featureIcons = [
+  `<svg width="83" height="85" viewBox="0 0 83 85" fill="none" xmlns="http://www.w3.org/2000/svg">
+<line x1="41.5896" y1="38.4698" x2="41.5896" y2="74.4125" stroke="#17334E" stroke-width="1.28611"/>
+<path d="M30.8401 14.8844C31.0195 14.7948 31.2308 14.7956 31.4108 14.8865L60.3133 29.4842L51.0449 33.977L23.2786 19.8189C22.8065 19.5782 22.8053 18.8991 23.2766 18.6637L30.8401 14.8844Z" fill="#E94E1B"/>
+<path d="M59.4803 39.808C59.9069 39.5898 60.1751 39.1483 60.1751 38.6643L60.175 30.2374C60.175 29.7599 59.6793 29.4439 59.254 29.6502L51.7515 33.2903C51.5316 33.397 51.3922 33.6212 51.3922 33.8681L51.3922 42.3577C51.3922 43.0827 52.1526 43.5565 52.7917 43.2295L59.4803 39.808Z" fill="#E94E1B"/>
+<path d="M40.9365 10.1912C41.2046 10.0596 41.519 10.0596 41.7871 10.1912L69.9209 24.0037C70.2511 24.1659 70.46 24.5021 70.46 24.8699V59.6434C70.4598 60.0137 70.2478 60.3509 69.9141 60.5115L41.7803 74.0584C41.5158 74.1857 41.2078 74.1857 40.9434 74.0584L12.8096 60.5115C12.4759 60.3508 12.2629 60.0137 12.2627 59.6434V24.8699C12.2627 24.5021 12.4725 24.1659 12.8027 24.0037L40.9365 10.1912Z" stroke="#17334E" stroke-width="1.28611"/>
+<path d="M41.5001 38.6102L41.2258 39.1921L41.504 39.3273L41.7808 39.1929L41.5001 38.6102ZM41.5001 38.6102L41.7743 38.0284L12.4749 23.7877L12.2007 24.3695L11.9264 24.9513L41.2258 39.1921L41.5001 38.6102ZM41.5001 38.6102L41.7808 39.1929L71.1074 24.9522L70.8267 24.3695L70.546 23.7868L41.2194 38.0276L41.5001 38.6102Z" fill="#17334E"/>
+</svg>
+`,
+  `<svg width="83" height="85" viewBox="0 0 83 85" fill="none" xmlns="http://www.w3.org/2000/svg">
+<line x1="41.9468" y1="38.4699" x2="41.9468" y2="74.4125" stroke="#17334E" stroke-width="2"/>
+<line x1="57.0889" y1="31.1883" x2="57.0889" y2="67.1309" stroke="#17334E"/>
+<line y1="-1" x2="34.4792" y2="-1" transform="matrix(0.0197478 0.999805 -0.999816 0.0191707 49.1938 34.7251)" stroke="#17334E" stroke-width="2"/>
+<line x1="16.9512" y1="26.6869" x2="16.9512" y2="62.6295" stroke="#17334E"/>
+<line x1="22.0957" y1="28.9376" x2="22.0957" y2="64.8802" stroke="#17334E"/>
+<line x1="27.2402" y1="31.1883" x2="27.2402" y2="67.1309" stroke="#17334E"/>
+<line x1="32.063" y1="33.7604" x2="32.063" y2="69.703" stroke="#17334E"/>
+<line x1="36.886" y1="36.0111" x2="36.886" y2="71.9537" stroke="#17334E"/>
+<line y1="-1" x2="34.8882" y2="-1" transform="matrix(0.0117169 0.999931 -0.999935 0.0113744 62.698 28.2945)" stroke="#17334E" stroke-width="2"/>
+<path d="M40.9375 10.1893C41.2048 10.0581 41.5188 10.0581 41.7861 10.1893L69.9238 24.0038C70.2531 24.1654 70.4619 24.5002 70.4619 24.8671V59.6454C70.4619 60.0148 70.2508 60.3522 69.918 60.5126L41.7793 74.0614C41.5156 74.1884 41.208 74.1884 40.9443 74.0614L12.8057 60.5126C12.4728 60.3523 12.2617 60.0148 12.2617 59.6454V24.8671C12.2617 24.5004 12.4698 24.1655 12.7988 24.0038L40.9375 10.1893Z" stroke="#17334E" stroke-width="1.28244"/>
+<path d="M27.3301 59.9971C27.3301 59.7599 27.5788 59.6048 27.7919 59.7093L39.0472 65.2291C39.157 65.283 39.2266 65.3946 39.2266 65.517V69.2585C39.2266 69.4955 38.9784 69.6506 38.7654 69.5467L27.5101 64.0548C27.3999 64.001 27.3301 63.8892 27.3301 63.7666V59.9971Z" fill="#E94E1B"/>
+<path d="M34.082 39.4121C34.082 39.1766 34.3274 39.0214 34.5401 39.1224L38.4003 40.9548C38.5122 41.0079 38.5834 41.1206 38.5834 41.2444V44.9922C38.5834 45.227 38.3395 45.3821 38.1269 45.2826L34.2667 43.4756C34.154 43.4228 34.082 43.3096 34.082 43.1852V39.4121Z" fill="#E94E1B"/>
+<path d="M41.5001 38.6102L41.0736 39.5149L41.5062 39.7252L41.9366 39.5163L41.5001 38.6102ZM41.5001 38.6102L41.9266 37.7054L12.6272 23.4647L12.2007 24.3694L11.7742 25.2742L41.0736 39.5149L41.5001 38.6102ZM41.5001 38.6102L41.9366 39.5163L71.2632 25.2755L70.8267 24.3694L70.3902 23.4633L41.0636 37.7041L41.5001 38.6102Z" fill="#17334E"/>
+</svg>
+`,
+  `<svg width="83" height="85" viewBox="0 0 83 85" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M65.9133 51.2838L69.4501 49.5154" stroke="#17334E" stroke-width="2"/>
+<path d="M55.9458 52.4092L46.4607 53.3738" stroke="#17334E" stroke-width="2"/>
+<path d="M69.4502 49.9977L76.7754 56.509C77.3521 57.0216 77.1207 57.9706 76.3728 58.1602L55.3029 63.5019C52.5163 64.0378 44.7889 64.0485 36.1719 59.8043C25.4007 54.4991 28.4553 54.8206 19.1309 54.4991H8.86295C8.4378 54.4991 8.03005 54.3302 7.72942 54.0295L7.2268 53.5269C7.02136 53.3215 6.87561 53.0641 6.80514 52.7822L6.62018 52.0423C6.42105 51.2458 6.85593 50.4276 7.62753 50.147L9.80659 49.3546" stroke="#17334E" stroke-width="2"/>
+<path d="M66.9847 52.3375C65.6752 34.0292 53.1243 17.3474 37.458 16.3979C30.4542 16.3979 25.5199 19.1231 20.6891 23.6779C20.4305 23.9218 20.7309 24.3316 21.0604 24.1984C46.5581 13.8887 54.1748 38.4331 55.1196 52.5371C55.1346 52.761 55.2634 52.9553 55.4619 53.0598L58.012 54.402C58.132 54.4651 58.2688 54.4886 58.403 54.4691L66.1712 53.3391C66.6628 53.2676 67.0201 52.8329 66.9847 52.3375Z" fill="#E94E1B"/>
+<path d="M23.1458 46.157H45.6614C46.2706 46.157 46.7649 46.6514 46.7649 47.2606V54.1824C46.7647 54.7915 46.2705 55.285 45.6614 55.285H35.1711L26.2795 50.5213L26.1692 50.4627H22.0422V47.2606L22.0481 47.1473C22.1046 46.5911 22.5746 46.157 23.1458 46.157Z" fill="white" stroke="#17334E"/>
+<path d="M8.03809 50.48H18.9701C28.2944 50.8015 25.2399 50.48 36.0111 55.7852L45.4962 60.6081" stroke="#17334E" stroke-width="2" stroke-linecap="round"/>
+<path d="M73.4693 53.6953L68.8071 49.5154C68.8071 31.2251 55.5634 16.3979 39.2265 16.3979C22.8896 16.3979 9.64585 31.2251 9.64585 49.5154L8.19897 49.8369" stroke="#17334E" stroke-width="2"/>
+</svg>
+`,
+];
 ---
 
-<section class="services py-8 md:py-10 lg:py-20" data-cmp="Services">
+<section class="services py-8 md:py-10 lg:py-20">
   <div class="container">
     <h2 class="_services-title mb-8 md:12 lg:mb-16 typo-h2">Наши услуги для бизнеса</h2>
     <div class="_services-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-6">
@@ -40,17 +72,29 @@ const serviceIcons = ["office", "cargo", "helmet"];
             return (
               <div
                 class:list={[
-                  "_service-card flex flex-col items-center px-6 rounded-xl text-center",
+                  "_service-card flex flex-col items-start px-6 ",
                   isFeatured
-                    ? "pt-6 lg:pt-12 col-span-1 sm:col-span-2 lg:col-span-4 bg-surface-primary-inverse text-text-primary-inverse"
-                    : "py-12 col-span-1 sm:col-span-1 lg:col-span-3 bg-surface-secondary text-text-primary",
+                    ? "col-span-1 sm:col-span-2 lg:col-span-4 bg-surface-primary text-text-primary"
+                    : "py-8 col-span-1 sm:col-span-1 lg:col-span-3 rounded-md bg-surface-secondary text-text-primary",
+                  // Вертикальный разделитель между первыми тремя
+                  isFeatured && index < 2 && "border-r border-outline",
                 ]}
               >
+                {isFeatured && (
+                  <div class="_service-card-image flex items-center justify-start mb-10">
+                    {/* SVG вместо картинки */}
+                    <div class="text-accent" set:html={featureIcons[index]} />
+                  </div>
+                )}
+
                 {isFeatured && <p class="mb-4">24/7</p>}
 
                 <h3 class="_service-card-title mb-6 typo-h4">{service.name}</h3>
                 <p
-                  class:list={["_service-card-description mb-8 typo-t3", isFeatured ? "text-text-secondary-inverse" : "text-text-primary"]}
+                  class:list={[
+                    "_service-card-description mb-8 typo-t3",
+                    isFeatured ? "text-text-secondary" : "text-text-secondary",
+                  ]}
                 >
                   {service.description}
                 </p>
@@ -59,25 +103,9 @@ const serviceIcons = ["office", "cargo", "helmet"];
                   href={`/${service.url.toLowerCase()}`}
                   class="mt-auto not-last:mb-12"
                   variant="primary"
-                  inverse={isFeatured}
                   arrow="right"
-                  text={`от ${discountedPrice} руб.`}
+                  text={`от ${discountedPrice} ₽ в час`}
                 />
-
-                {isFeatured && (
-                  <div class="_service-card-image mt-auto w-full aspect-video rounded-lg">
-                    {media === "icon" ? (
-                      <IconService name={serviceIcons[index]} class="w-full h-full" />
-                    ) : (
-                      <img
-                        src={service.image || `/images/service-${index + 1}.webp`}
-                        alt={`Изображение для услуги ${service.name}`}
-                        class="w-full h-full object-cover rounded-lg"
-                        loading="lazy"
-                      />
-                    )}
-                  </div>
-                )}
               </div>
             );
           })
