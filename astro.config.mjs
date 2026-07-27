@@ -1,15 +1,15 @@
-// @ts-check
-import { defineConfig, fontProviders } from "astro/config";
-// import node from "@astrojs/node";
-
+import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 
-// import vercel from "@astrojs/vercel";
+import vercel from "@astrojs/vercel";
+// import node from "@astrojs/node";
 
 // https://astro.build/config
 export default defineConfig({
-  output: "static",
+  output: "server",
   
+  adapter: vercel(),
+
   // adapter: node({
   //   mode: "standalone",
   // }),
