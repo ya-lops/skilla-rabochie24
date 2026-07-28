@@ -5,6 +5,8 @@ import { STORAGE_PATH } from "@/lib/consts";
 
 import BlockMessengersLinks from "../blocks/BlockMessengersLinks.astro";
 import BlockAppSkilla from "../blocks/BlockAppSkilla.astro";
+import PhoneReplacement from "../blocks/PhoneReplacement.astro";
+import BlockSocialLinks from "../blocks/BlockSocialLinks.astro";
 
 interface Props {
   brandData: BrandData;
@@ -42,11 +44,14 @@ const workTime = [
           <div class="flex flex-col gap-4">
             {
               brandData.main.site_phone && (
-                <a class="typo-t1 text-text-primary hover:underline!" href={`tel:${brandData.main.site_phone}`}>
-                  {brandData.main.site_phone}
-                </a>
+                <PhoneReplacement
+                  phone={brandData.main.site_phone}
+                  replacementPhones={brandData.main.site_replacement_phones}
+                  class="typo-t1 text-text-primary hover:underline!"
+                />
               )
             }
+
             {
               brandData.main.site_phone2 && (
                 <a class="typo-t1 text-text-primary hover:underline!" href={`tel:${brandData.main.site_phone2}`}>
@@ -55,24 +60,19 @@ const workTime = [
               )
             }
 
-            <a class="text-text-primary hover:underline!" href={`mailto:${brandData.main.site_email}`}
-              >{brandData.main.site_email}</a
-            >
+            <a class="text-text-primary hover:underline!" href={`mailto:${brandData.main.site_email}`}>{brandData.main.site_email}</a>
           </div>
 
-          <BlockMessengersLinks {brandData} class="text-text-secondary"/>
-
           {
-            workTime && (
-              <div class="text-text-tertiary">
-                {workTime.map((i: any) => (
-                  <p class="not:last:mb-1">
-                    {i.text}: {i.value}
-                  </p>
-                ))}
+            brandData.main.site_work_time && (
+              <div class="text-text-tertiary-inverse">
+                <p>Время заказов: {brandData.main.site_work_time}</p>
               </div>
             )
           }
+
+          <BlockMessengersLinks {brandData} class="text-text-secondary" />
+          <BlockSocialLinks {brandData} />
         </div>
 
         <nav
@@ -136,7 +136,10 @@ const workTime = [
           </div>
         </nav>
 
-        <BlockAppSkilla />
+        {/* Условие для отображения личного кабинета, нужно брать из админки */}
+        {/* сейчас просто написано чтото рандомное */}
+        {/* в MobileNav.astro тоже */}
+        {brandData.main?.showPersonal && <BlockAppSkilla />}
       </div>
     </div>
   </div>
