@@ -18,6 +18,23 @@ function getMinPriceService(subServices: Array<{ price: string; unit: string; na
 const discount = getDiscountPercent(brandData.main.adv_price_percent);
 const showDiscount = hasDiscount(discount);
 
+const hasOrder = brandData.services.some((s) => s.order !== undefined);
+
+const sortedServices = (
+  hasOrder
+    ? brandData.services.sort((a, b) => (Number(a.order) || 0) - (Number(b.order) || 0))
+    : brandData.services.map((service, index) => ({
+        ...service,
+        order: index < 3 ? index + 1 : null,
+      }))
+)
+  .filter((service) => service.is_active === 1)
+  .slice(0, 7);
+
+function isFeatured(service: (typeof sortedServices)[0]): boolean {
+  return (Number(service.order) || 0) > 0;
+}
+
 // SVG-иконки для первых трёх услуг
 const featureIcons = [
   `<svg width="83" height="85" viewBox="0 0 83 85" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -57,54 +74,47 @@ const featureIcons = [
 ];
 ---
 
-<section class="services py-8 md:py-10 lg:py-20">
+<section class="py-8 md:py-10 lg:py-20">
   <div class="container">
-    <h2 class="_services-title mb-8 md:12 lg:mb-16 typo-h2">Наши услуги для бизнеса</h2>
-    <div class="_services-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-6">
+    <h2 class="mb-8 md:12 lg:mb-16 typo-h2">Наши услуги для бизнеса</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-6">
       {
-        brandData.services
-          .filter((service) => service.is_active === 1)
-          .slice(0, 7)
-          .map((service, index) => {
-            const minService = getMinPriceService(service.services);
-            const discountedPrice = getDiscountedPrice(minService.price, discount);
-            const isFeatured = index < 3;
+        sortedServices.map((service, index) => {
+          const minService = getMinPriceService(service.services);
+          const discountedPrice = getDiscountedPrice(minService.price, discount);
+          const isFeatured = index < 3;
 
-            return (
-              <div
-                class:list={[
-                  "_service-card flex flex-col items-start px-6 ",
-                  isFeatured
-                    ? "col-span-1 sm:col-span-2 lg:col-span-4 bg-surface-primary text-text-primary"
-                    : "py-8 col-span-1 sm:col-span-1 lg:col-span-3 rounded-md bg-surface-secondary text-text-primary",
-                  // Вертикальный разделитель между первыми тремя
-                  isFeatured && index < 2 && "border-r border-outline",
-                ]}
-              >
-                {isFeatured && (
-                  <div class="_service-card-image flex items-center justify-start mb-10">
-                    {/* SVG вместо картинки */}
-                    <div class="text-accent" set:html={featureIcons[index]} />
-                  </div>
-                )}
+          return (
+            <div
+              class:list={[
+                "flex flex-col items-start px-6 ",
+                isFeatured
+                  ? "pb-4 col-span-1 sm:col-span-2 lg:col-span-4 bg-surface-primary text-text-primary border border-outline"
+                  : "py-8 col-span-1 sm:col-span-1 lg:col-span-3 rounded-md bg-surface-secondary text-text-primary",
+              ]}
+            >
+              {isFeatured && (
+                <div class="flex items-center justify-start mb-10">
+                  {/* SVG вместо картинки */}
+                  <div class="text-accent" set:html={featureIcons[index]} />
+                </div>
+              )}
 
-                {isFeatured && <p class="mb-4">24/7</p>}
+              {isFeatured && <p class="mb-4">24/7</p>}
 
-                <h3 class="_service-card-title mb-6 typo-h4">{service.name}</h3>
-                <p class:list={["_service-card-description mb-8 typo-t3", isFeatured ? "text-text-secondary" : "text-text-secondary"]}>
-                  {service.description}
-                </p>
+              <h3 class="mb-6 typo-h4">{service.name}</h3>
+              <p class:list={["mb-8 typo-t3", isFeatured ? "text-text-secondary" : "text-text-secondary"]}>{service.description}</p>
 
-                <Button
-                  href={`/${service.url.toLowerCase()}`}
-                  class="mt-auto not-last:mb-12"
-                  variant="primary"
-                  arrow="right"
-                  text={`от ${discountedPrice} ₽ в час`}
-                />
-              </div>
-            );
-          })
+              <Button
+                href={`/${service.url.toLowerCase()}`}
+                class="mt-auto not-last:mb-12"
+                variant="primary"
+                arrow="right"
+                text={`от ${discountedPrice} ₽ в час`}
+              />
+            </div>
+          );
+        })
       }
     </div>
     <div class="flex items-center justify-center gap-4 mt-16">

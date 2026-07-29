@@ -4,6 +4,7 @@ import FormInput from "@/components/ui/FormInput.astro";
 import FormCheckbox from "@/components/ui/FormCheckbox.astro";
 
 import type { BrandData } from "@/types/brand";
+import PhoneReplacement from "./PhoneReplacement.astro";
 
 interface Props {
   brandData: BrandData;
@@ -71,9 +72,11 @@ const { brandData } = Astro.props;
         <div class="flex flex-col gap-4">
           {
             brandData.main.site_phone && (
-              <a class="typo-t1 text-accent hover:underline!" href={`tel:${brandData.main.site_phone}`}>
-                {brandData.main.site_phone}
-              </a>
+              <PhoneReplacement
+                phone={brandData.main.site_phone}
+                replacementPhones={brandData.main.site_replacement_phones}
+                class="typo-t1 text-accent hover:underline!"
+              />
             )
           }
           {
